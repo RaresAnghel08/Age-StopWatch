@@ -1,39 +1,29 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #1e1f29;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .container {
-    text-align: center;
-    width: 300px;
-    background-color: #2b2d3c;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  h1 {
-    color: #ffcc00;
-  }
-  input, button {
-    font-size: 16px;
-    padding: 10px;
-    margin: 10px 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  button {
-    background-color: #00a2ff;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-  }
-  .age-display div {
-    font-size: 20px;
-    margin: 5px 0;
-    color: #ffcc00;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-theme {
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+.container {
+  width: 350px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+input, button {
+  padding: 10px;
+  margin: 5px;
+}
+
+.age-display div {
+  font-size: 1.2em;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
