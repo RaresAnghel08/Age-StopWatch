@@ -60,7 +60,28 @@ async function startStopwatch() {
 function resetStopwatch() {
   clearInterval(interval);
   document.getElementById("ageDisplay").style.display = "none";
+
+  // Clear age display elements
+  document.getElementById("years").textContent = "";
+  document.getElementById("months").textContent = "";
+  document.getElementById("weeks").textContent = "";
+  document.getElementById("days").textContent = "";
+  document.getElementById("hours").textContent = "";
+  document.getElementById("minutes").textContent = "";
+  document.getElementById("seconds").textContent = "";
+  document.getElementById("nextBirthday").textContent = "";
+  document.getElementById("zodiac").textContent = "";
+  document.getElementById("birthstone").textContent = "";
+
+  // Clear fun facts
+  document.getElementById("heartbeats").textContent = "";
+  document.getElementById("breaths").textContent = "";
+
+  // Clear historical events
+  const historicalEvents = document.getElementById("historicalEvents");
+  historicalEvents.innerHTML = "";
 }
+
 
 function toggleTheme() {
   document.body.classList.toggle("dark-theme");

@@ -74,7 +74,7 @@ def get_historical_events(birthdate):
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
-        events = [event["text"] for event in data.get("events", [])[:3]]  # Get first 5 events
+        events = [event["text"] for event in data.get("events", [])[:2]]  # Get first 5 events
         return events
     except requests.RequestException:
         return ["Historical events unavailable."]
