@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Age Stopwatch</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Live Age Stopwatch</h1>
+    <label for="birthdate">Enter your birthdate (DD/MM/YYYY):</label>
+    <input type="text" id="birthdate" maxlength="10" placeholder="DD/MM/YYYY" oninput="autoFormatDate(this)">
+    <button onclick="startStopwatch()">Start Stopwatch</button>
+
+    <div class="age-display" id="ageDisplay" style="display: none;">
+      <div id="years"></div>
+      <div id="days"></div>
+      <div id="hours"></div>
+      <div id="minutes"></div>
+      <div id="seconds"></div>
+    </div>
+  </div>
+
+  <script>
+    let interval;
+
+    function autoFormatDate(input) {
+      let value = input.value;
+      if (value.length === 2 || value.length === 5) {
+        input.value += '/';
+      }
+    }
+
+    async function startStopwatch() {
+      const birthdateInput = document.getElementById("birthdate").value;
+      const response = await fetch("/calculate_age", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ birthdate: birthdateInput })
+      });
+
+      if (!response.ok) {
+        alert("Please enter a valid date in DD/MM/YYYY format");
+        return;
+      }
+
+      document.getElementById("ageDisplay").style.display = "block";
+      if (interval) clearInterval(interval);
+      interval = setInterval(async () => {
+        const response = await fetch("/calculate_age", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ birthdate: birthdateInput })
+        });
+        const ageData = await response.json();
+
+        document.getElementById("years").textContent = `${ageData.years} Years`;
+        document.getElementById("days").textContent = `${ageData.days} Days`;
+        document.getElementById("hours").textContent = `${ageData.hours} Hours`;
+        document.getElementById("minutes").textContent = `${ageData.minutes} Minutes`;
+        document.getElementById("seconds").textContent = `${ageData.seconds} Seconds`;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
