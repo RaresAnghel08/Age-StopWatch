@@ -2,16 +2,12 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
   color: #333;
-  transition: background 0.3s, color 0.3s;
-}
-
-body.dark-theme {
-  background-color: #333;
-  color: #f0f0f0;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-  width: 350px;
+  max-width: 800px;
   margin: auto;
   padding: 20px;
   text-align: center;
@@ -22,8 +18,38 @@ input, button {
   margin: 5px;
 }
 
+.layout {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidebar {
+  width: 20%;
+  padding: 10px;
+  background-color: #eaeaea;
+  border-radius: 5px;
+}
+
+.age-display {
+  width: 50%;
+  padding: 10px;
+}
+
 .age-display div {
   font-size: 1.2em;
   margin-top: 10px;
-  transition: all 0.3s ease;
+}
+
+.dark-theme {
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+.dark-theme .sidebar {
+  background-color: #555;
+}
+
+.dark-theme input, .dark-theme button {
+  background-color: #444;
+  color: #f0f0f0;
 }

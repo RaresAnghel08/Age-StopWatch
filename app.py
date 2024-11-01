@@ -1,25 +1,32 @@
 from flask import Flask, render_template, jsonify, request
-from datetime import datetime, timedelta
+from datetime import datetime
+import requests
 
 app = Flask(__name__)
 
 def calculate_age(birthdate):
     current_time = datetime.now()
     age_timedelta = current_time - birthdate
-    # Calculate years, days, hours, minutes, and seconds
+
+    # Age calculations
     years = age_timedelta.days // 365
     days = age_timedelta.days % 365
     hours = (age_timedelta.seconds // 3600) % 24
     minutes = (age_timedelta.seconds % 3600) // 60
     seconds = age_timedelta.seconds % 60
-    # Additional calculations
     months = years * 12 + days // 30
     weeks = age_timedelta.days // 7
+
     # Next birthday countdown
     next_birthday = datetime(current_time.year, birthdate.month, birthdate.day)
     if next_birthday < current_time:
         next_birthday = datetime(current_time.year + 1, birthdate.month, birthdate.day)
     days_until_birthday = (next_birthday - current_time).days
+
+    # Fun facts
+    avg_heartbeats = age_timedelta.total_seconds() / 0.8  # avg 80 bpm
+    avg_breaths = age_timedelta.total_seconds() / 3       # avg 20 breaths per min
+
     return {
         "years": years,
         "months": months,
@@ -30,7 +37,10 @@ def calculate_age(birthdate):
         "seconds": seconds,
         "days_until_birthday": days_until_birthday,
         "zodiac": get_zodiac_sign(birthdate),
-        "birthstone": get_birthstone(birthdate)
+        "birthstone": get_birthstone(birthdate),
+        "heartbeats": int(avg_heartbeats),
+        "breaths": int(avg_breaths),
+        "historical_events": get_historical_events(birthdate)
     }
 
 def get_zodiac_sign(birthdate):
@@ -56,6 +66,19 @@ def get_birthstone(birthdate):
     ]
     return birthstones[birthdate.month - 1]
 
+def get_historical_events(birthdate):
+    url = f"https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/{birthdate.month}/{birthdate.day}"
+    headers = {"User-Agent": "AgeStopwatchApp/1.0 (your_email@example.com)"}
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        events = [event["text"] for event in data.get("events", [])[:3]]  # Get first 5 events
+        return events
+    except requests.RequestException:
+        return ["Historical events unavailable."]
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -64,10 +87,12 @@ def index():
 def calculate_age_endpoint():
     data = request.json
     birthdate_str = data.get("birthdate")
+    
     try:
         birthdate = datetime.strptime(birthdate_str, "%d/%m/%Y")
     except ValueError:
         return jsonify({"error": "Invalid date format. Use DD/MM/YYYY."}), 400
+
     age_data = calculate_age(birthdate)
     return jsonify(age_data)
 

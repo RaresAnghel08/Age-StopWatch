@@ -20,10 +20,8 @@ async function startStopwatch() {
     return;
   }
 
-  // Display the age section
   document.getElementById("ageDisplay").style.display = "block";
 
-  // Start real-time updates
   if (interval) clearInterval(interval);
   interval = setInterval(async () => {
     const response = await fetch("/calculate_age", {
@@ -35,7 +33,6 @@ async function startStopwatch() {
     if (response.ok) {
       const ageData = await response.json();
 
-      // Update the displayed values
       document.getElementById("years").textContent = `${ageData.years} Years`;
       document.getElementById("months").textContent = `${ageData.months} Months`;
       document.getElementById("weeks").textContent = `${ageData.weeks} Weeks`;
@@ -46,6 +43,16 @@ async function startStopwatch() {
       document.getElementById("nextBirthday").textContent = `${ageData.days_until_birthday} Days until next birthday`;
       document.getElementById("zodiac").textContent = `Zodiac: ${ageData.zodiac}`;
       document.getElementById("birthstone").textContent = `Birthstone: ${ageData.birthstone}`;
+      document.getElementById("heartbeats").textContent = `Approximate Heartbeats: ${ageData.heartbeats}`;
+      document.getElementById("breaths").textContent = `Approximate Breaths: ${ageData.breaths}`;
+
+      const historicalEvents = document.getElementById("historicalEvents");
+      historicalEvents.innerHTML = "";
+      ageData.historical_events.forEach(event => {
+        const li = document.createElement("li");
+        li.textContent = event;
+        historicalEvents.appendChild(li);
+      });
     }
   }, 1000);
 }

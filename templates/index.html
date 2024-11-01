@@ -15,19 +15,36 @@
     <button onclick="resetStopwatch()">Reset</button>
     <button onclick="toggleTheme()">Toggle Theme</button>
 
-    <div class="age-display" id="ageDisplay" style="display: none;">
-      <div id="years"></div>
-      <div id="months"></div>
-      <div id="weeks"></div>
-      <div id="days"></div>
-      <div id="hours"></div>
-      <div id="minutes"></div>
-      <div id="seconds"></div>
-      <div id="nextBirthday"></div>
-      <div id="zodiac"></div>
-      <div id="birthstone"></div>
+    <div class="layout">
+      <!-- Left Sidebar (Fun Facts) -->
+      <div class="sidebar left">
+        <h2>Fun Facts</h2>
+        <p id="heartbeats"></p>
+        <p id="breaths"></p>
+      </div>
+
+      <!-- Main Age Display -->
+      <div class="age-display" id="ageDisplay" style="display: none;">
+        <div id="years"></div>
+        <div id="months"></div>
+        <div id="weeks"></div>
+        <div id="days"></div>
+        <div id="hours"></div>
+        <div id="minutes"></div>
+        <div id="seconds"></div>
+        <div id="nextBirthday"></div>
+        <div id="zodiac"></div>
+        <div id="birthstone"></div>
+      </div>
+
+      <!-- Right Sidebar (Historical Events) -->
+      <div class="sidebar right">
+        <h2>Historical Events</h2>
+        <ul id="historicalEvents"></ul>
+      </div>
     </div>
   </div>
+
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
