@@ -6,24 +6,20 @@ app = Flask(__name__)
 def calculate_age(birthdate):
     current_time = datetime.now()
     age_timedelta = current_time - birthdate
-
     # Calculate years, days, hours, minutes, and seconds
     years = age_timedelta.days // 365
     days = age_timedelta.days % 365
     hours = (age_timedelta.seconds // 3600) % 24
     minutes = (age_timedelta.seconds % 3600) // 60
     seconds = age_timedelta.seconds % 60
-
     # Additional calculations
     months = years * 12 + days // 30
     weeks = age_timedelta.days // 7
-
     # Next birthday countdown
     next_birthday = datetime(current_time.year, birthdate.month, birthdate.day)
     if next_birthday < current_time:
         next_birthday = datetime(current_time.year + 1, birthdate.month, birthdate.day)
     days_until_birthday = (next_birthday - current_time).days
-
     return {
         "years": years,
         "months": months,
@@ -68,12 +64,10 @@ def index():
 def calculate_age_endpoint():
     data = request.json
     birthdate_str = data.get("birthdate")
-    
     try:
         birthdate = datetime.strptime(birthdate_str, "%d/%m/%Y")
     except ValueError:
         return jsonify({"error": "Invalid date format. Use DD/MM/YYYY."}), 400
-
     age_data = calculate_age(birthdate)
     return jsonify(age_data)
 
